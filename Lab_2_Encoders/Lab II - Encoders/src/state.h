@@ -1,6 +1,6 @@
-// #ifndef _STATE_H
-// #define _STATE_H
-// #endif
+#ifndef _STATE_H
+#define _STATE_H
+#endif
 
 class state {
   public:
