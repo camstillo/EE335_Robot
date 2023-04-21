@@ -38,7 +38,15 @@ int main(){
 
     //otherwise, continually run the 
     //run operation for each state
-    leftState = leftPrevState->
+    leftState = leftPrevState->run();
+    rightState = rightPrevState->run();
 
+    //check to see if run changed the states at all
+    rightStateChange = (rightState != rightPrevState);
+    leftStateChange = (leftState != leftPrevState);
+
+    //update previous state
+    rightPrevState = rightState;
+    leftPrevState  = leftState;
   }
 }
