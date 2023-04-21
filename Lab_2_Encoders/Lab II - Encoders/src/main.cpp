@@ -7,33 +7,32 @@
 #define OUT_2   4
 
 int main(){
-  //intialize pins
-  pinMode(IN_1, INPUT);
-  pinMode(IN_2, INPUT);
-  pinMode(OUT_1, OUTPUT);
-  pinMode(OUT_2, OUTPUT);
 
   //initialize left encoder object
-  static encoder leftEncoder;
-  leftEncoder.begin(IN_1);
+  encoder leftEncoder;
+  leftEncoder.begin(IN_1, OUT_1);
   bool leftStateChange = LOW;
   state* leftState = &Low;
   state* leftPrevState = leftState;
 
   //initialize right encoder object
-  static encoder rightEncoder;
-  rightEncoder.begin(IN_2);
+  encoder rightEncoder;
+  rightEncoder.begin(IN_2, OUT_2);
   bool rightStateChange = LOW;
   state* rightState = &Low;
   state* rightPrevState = rightState;
+
+  Serial.begin(9600);
 
   while(1){
     //if either the state has changed, 
     //run the state entrance procedure
     if(leftStateChange){
       leftState->enter();
+      Serial.println("left change");
     } else if(rightStateChange) {
       rightState->enter();
+      Serial.println("right change");
     }
 
     //otherwise, continually run the 
@@ -44,6 +43,7 @@ int main(){
     //check to see if run changed the states at all
     rightStateChange = (rightState != rightPrevState);
     leftStateChange = (leftState != leftPrevState);
+    //Serial.println(rightStateChange);
 
     //update previous state
     rightPrevState = rightState;
