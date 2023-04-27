@@ -2,11 +2,11 @@
 #include <Arduino.h>
 
 //encoder variables
-uint8_t encoder::PIN = 5;
-volatile int encoder::count = 0;
-unsigned long encoder::startTime = 0;
-unsigned long encoder::pulseWidth = 0;
-volatile bool encoder::intFlag = LOW;
+// uint8_t encoder::PIN = 5;
+// volatile int encoder::count = 0;
+// unsigned long encoder::startTime = 0;
+// unsigned long encoder::pulseWidth = 0;
+// volatile bool encoder::intFlag = LOW;
 encoder * encoder::instances [2] = { NULL, NULL };
 
 
@@ -20,13 +20,11 @@ void encoder::begin(uint8_t intPin, uint8_t ledPin){
       case 2: 
         attachInterrupt (digitalPinToInterrupt(intPin), switchPressedExt0, CHANGE);
         instances [0] = this;
-        Serial.println("First Instance");
       break;
         
       case 3: 
         attachInterrupt (digitalPinToInterrupt(intPin), switchPressedExt1, CHANGE);
         instances [1] = this;
-        Serial.println("Second Instance");
       break;
       }
 }
@@ -48,9 +46,10 @@ void encoder::interruptFlag(){
 }
 
 //Low state operations
-void low::enter(){ Serial.println("L");}
+void low::enter(){}
 state* low::run(){
-    digitalWrite(encoder::PIN, LOW);
+    uint8_t encoder::*LEDPIN = &encoder::PIN;
+    digitalWrite(encoder::*LEDPIN, LOW);
     if(encoder::intFlag){
         encoder::intFlag = LOW;
         return &Rise;
@@ -63,14 +62,13 @@ state* low::run(){
 void rising::enter(){
     encoder::count++;
     encoder::startTime = millis();
-    //Serial.println("R");
 }
 state* rising::run(){
     return &High;
 }
 
 //high state operation
-void high::enter(){Serial.println("H");}
+void high::enter(){}
 state* high::run(){
     digitalWrite(encoder::PIN, HIGH);
     if(encoder::intFlag){
@@ -84,7 +82,6 @@ state* high::run(){
 //falling state operation
 void falling::enter(){
     encoder::pulseWidth = millis() - encoder::startTime;
-    Serial.println("F");
 }
 state* falling::run(){
     return &Low;

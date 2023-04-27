@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include "encoder.h"
+// #include "avr8-stub.h"
+// #include "app_api.h"
 
 #define IN_1    3
 #define OUT_1   5
@@ -7,6 +9,8 @@
 #define OUT_2   4
 
 int main(){
+  //initialize debugger
+  // debug_init();  
 
   //initialize left encoder object
   encoder leftEncoder;
@@ -22,17 +26,17 @@ int main(){
   state* rightState = &Low;
   state* rightPrevState = rightState;
 
-  Serial.begin(9600);
+  //Serial.begin(9600);
 
   while(1){
     //if either the state has changed, 
     //run the state entrance procedure
     if(leftStateChange){
       leftState->enter();
-      Serial.println("left change");
+      //Serial.println("left change");
     } else if(rightStateChange) {
       rightState->enter();
-      Serial.println("right change");
+      //Serial.println("right change");
     }
 
     //otherwise, continually run the 

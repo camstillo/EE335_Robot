@@ -5,18 +5,23 @@ class encoder{
     public:
 
     //encoder variables 
-    static uint8_t PIN;
-    static volatile bool intFlag;
-    static volatile int count;
-    static unsigned long startTime;
-    static unsigned long pulseWidth;    
+    uint8_t PIN;
+    volatile bool intFlag;
+    volatile int count;
+    unsigned long startTime;
+    unsigned long pulseWidth;    
 
     //initialization function
     void begin(uint8_t intPin, uint8_t ledPin);
 
+    friend class low;
+    friend class high;
+    friend class rising;
+    friend class falling;
+
     private:
     //function called during interrupt
-    static void interruptFlag();
+    void interruptFlag();
 
     //glue functions to redirect interrupt
     //handling routines
