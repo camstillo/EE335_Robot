@@ -7,6 +7,8 @@ Declare all the necessary functions for state machine operations
 void Encoder::begin(double diameter){
     pinMode(INT_PIN, INPUT);
     Encoder::RADIUS = diameter/2;
+    if(digitalRead(Encoder::INT_PIN)) Encoder::currentState = ST_HIGH;
+    else Encoder::currentState = ST_LOW;
 }
 
 double Encoder::getSpeed(){
@@ -24,7 +26,7 @@ void Encoder::rise(){
 
     //decide which transition to occur between the 
     BEGIN_TRANSITION_MAP
-        TRANSITION_MAP_ENTRY (ST_HIGH)          //ST_LOW
+        TRANSITION_MAP_ENTRY (ST_HIGH)    //ST_LOW
         TRANSITION_MAP_ENTRY (ST_HIGH)    //ST_HIGH
     END_TRANSITION_MAP(NULL)
     Encoder::bufCurrentState = currentState;
