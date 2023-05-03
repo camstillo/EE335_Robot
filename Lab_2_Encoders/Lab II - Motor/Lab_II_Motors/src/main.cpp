@@ -12,6 +12,9 @@
 
 //declare motor objects
 Motor frontRight;
+Motor frontLeft;
+Motor backRight;
+Motor backLeft;
 
 // //interrupt function
 // void leftInterruptFunc() {
@@ -48,17 +51,19 @@ void setup(){
 
   //initialize motor object
   frontRight.begin(4);
+  frontLeft.begin(2);
+  backRight.begin(3);
+  backLeft.begin(1);
 
   //begin serial monitor
   Serial.begin(9600);
 }
 
 void loop() {
-  static unsigned long lastTime = millis();
-  if (millis() - lastTime > 1000){
-    frontRight.setSpeed((MotorData *)255);
-    lastTime = millis();
-  }
+  // static unsigned long lastTime = millis();
+  // if (millis() - lastTime > 1000){
+    // lastTime = millis();
+  // }
   // if(leftEncoder.speed != leftLastSpeed){
   //   Serial.println(leftEncoder.speed);
   //   leftLastSpeed = leftEncoder.speed;
@@ -67,6 +72,28 @@ void loop() {
   //   Serial.println(rightEncoder.speed);
   //   rightLastSpeed = rightEncoder.speed;
   // }
+
+  
+  if(millis() <= 10000){
+    MotorData* data1 = new MotorData;
+    data1->speed = 100;
+    frontRight.speedSet(data1);
+    MotorData* data2 = new MotorData;
+    data2->speed = 100;
+    frontLeft.speedSet(data2);
+    MotorData* data3 = new MotorData;
+    data3->speed = 100;
+    backLeft.speedSet(data3);
+    MotorData* data4 = new MotorData;
+    data4->speed = 100;
+    backRight.speedSet(data4);
+  } else {
+    frontRight.halt();
+    frontLeft.halt();
+    backLeft.halt();
+    backRight.halt();
+  }
+
 }
 
 

@@ -3,13 +3,16 @@ Defines functions in Motor.h
 */
 #include "Motor.h"
 
+
 //declare begin function
 void Motor::begin(uint8_t motorNumber) {
+    MotorShield = Adafruit_MotorShield();
     Motor::Motor_Number = motorNumber;
+    DC_Motor = MotorShield.getMotor(Motor::Motor_Number);
     MotorShield.begin();
 }
 
-void Motor::setSpeed(MotorData * pData){
+void Motor::speedSet(MotorData * pData){
     BEGIN_TRANSITION_MAP
         TRANSITION_MAP_ENTRY (ST_RUN)        //IDLE
         TRANSITION_MAP_ENTRY (ST_RUN)        //RUN
@@ -29,17 +32,17 @@ void Motor::ST_Idle(){
     //do nothing
 }
 
-void Motor::ST_Run(MotorData * speed){
+void Motor::ST_Run(MotorData * pData){
     //temporary variable to cast speed to uint16_t
     //consider making a function which takes a float
     //and returns a value between -255 and 255
-    uint16_t _speed = (uint16_t)speed;
+    int _speed = pData->speed;
 
     //How to drive the motor in the run state
     if(_speed == 0){
         this->halt();
     }else if(_speed < 0 && _speed >= -255){
-        DC_Motor->setSpeed(_speed);
+        DC_Motor->setSpeed(-1*_speed);
         DC_Motor->run(BACKWARD);
     } else if(_speed > 0 && _speed <= 255) {
         DC_Motor->setSpeed(_speed);

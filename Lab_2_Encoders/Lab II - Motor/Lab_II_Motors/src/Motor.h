@@ -14,7 +14,8 @@ speed, which will determine how fast the motor is set to. This class does not in
 #include "Adafruit_MS_PWMServoDriver.h"
 
 class MotorData : public EventData {
-    uint16_t speed;
+    public:
+    int speed;
 };
 
 class Motor : public StateMachine{
@@ -23,11 +24,11 @@ class Motor : public StateMachine{
     Motor() : StateMachine(ST_MAX_STATES) {};
 
     //declare motor shield objects
-    Adafruit_MotorShield MotorShield = Adafruit_MotorShield();
-    Adafruit_DCMotor *DC_Motor = MotorShield.getMotor(Motor::Motor_Number);
+    Adafruit_MotorShield MotorShield;
+    Adafruit_DCMotor *DC_Motor;
 
     //transition table functions
-    void setSpeed(MotorData*);
+    void speedSet(MotorData*);
     void halt();
     void begin(uint8_t);
 
