@@ -1,5 +1,6 @@
 //#include "Encoder.h"
-#include "Motor.h"
+// #include "Motor.h"
+#include "Drivetrain.h"
 
 #define IN_1 2
 #define IN_2 3
@@ -11,10 +12,13 @@
 // void rightInterruptFunc();
 
 //declare motor objects
-Motor frontRight;
-Motor frontLeft;
-Motor backRight;
-Motor backLeft;
+// Motor frontRight;
+// Motor frontLeft;
+// Motor backRight;
+// Motor backLeft;
+
+//Declare Drivetrain object
+Drivetrain base;
 
 // //interrupt function
 // void leftInterruptFunc() {
@@ -50,13 +54,16 @@ void setup(){
   // attachInterrupt(digitalPinToInterrupt(rightEncoder.INT_PIN), rightInterruptFunc, CHANGE);
 
   //initialize motor object
-  frontRight.begin(4);
-  frontLeft.begin(2);
-  backRight.begin(3);
-  backLeft.begin(1);
+  // frontRight.begin(4);
+  // frontLeft.begin(2);
+  // backRight.begin(3);
+  // backLeft.begin(1);
+
+  //initalize drivetrain
+  base.begin();
 
   //begin serial monitor
-  Serial.begin(9600);
+  // Serial.begin(9600);
 }
 
 void loop() {
@@ -74,25 +81,53 @@ void loop() {
   // }
 
   
-  if(millis() <= 10000){
-    MotorData* data1 = new MotorData;
-    data1->speed = 100;
-    frontRight.speedSet(data1);
-    MotorData* data2 = new MotorData;
-    data2->speed = 100;
-    frontLeft.speedSet(data2);
-    MotorData* data3 = new MotorData;
-    data3->speed = 100;
-    backLeft.speedSet(data3);
-    MotorData* data4 = new MotorData;
-    data4->speed = 100;
-    backRight.speedSet(data4);
-  } else {
-    frontRight.halt();
-    frontLeft.halt();
-    backLeft.halt();
-    backRight.halt();
-  }
+  // if(millis() <= 2000){
+    // MotorData* data1 = new MotorData;
+    // data1->speed = 100;
+    // frontRight.speedSet(data1);
+    // MotorData* data2 = new MotorData;
+    // data2->speed = 100;
+    // frontLeft.speedSet(data2);
+    // MotorData* data3 = new MotorData;
+    // data3->speed = 100;
+    // backLeft.speedSet(data3);
+    // MotorData* data4 = new MotorData;
+    // data4->speed = 100;
+    // backRight.speedSet(data4);
+    if(millis() <= 1000){
+      ControlData * cData = new ControlData;
+      cData->direction = base.FWD;
+      cData->speed = 100;
+      base.moveFunction(cData);
+    } else if (millis() > 1000 && millis() <= 2000){
+      ControlData * cData = new ControlData;
+      cData->direction = base.BACK;
+      cData->speed = 100;
+      base.moveFunction(cData);
+    } else if (millis() > 2000 && millis() <= 3000){
+      ControlData * cData = new ControlData;
+      cData->direction = base.RIGHT;
+      cData->speed = 100;
+      base.moveFunction(cData);
+    } else if (millis() > 3000 && millis() <= 4000){
+      ControlData * cData = new ControlData;
+      cData->direction = base.LEFT;
+      cData->speed = 100;
+      base.moveFunction(cData);
+    } else {
+      ControlData * cData = new ControlData;
+      cData->direction = base.STOP;
+      cData->speed = 0;
+      base.moveFunction(cData);
+    }
+
+  // } else {
+  //   // frontRight.halt();
+  //   // frontLeft.halt();
+  //   // backLeft.halt();
+  //   // backRight.halt();
+    
+  // }
 
 }
 
