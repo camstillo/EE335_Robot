@@ -1,6 +1,7 @@
 //#include "Encoder.h"
 // #include "Motor.h"
 #include "Drivetrain.h"
+#include "BTControl.h"
 
 #define IN_1 2
 #define IN_2 3
@@ -19,6 +20,7 @@
 
 //Declare Drivetrain object
 Drivetrain base;
+Bluetooth BT;
 
 // //interrupt function
 // void leftInterruptFunc() {
@@ -79,7 +81,35 @@ void loop() {
   //   Serial.println(rightEncoder.speed);
   //   rightLastSpeed = rightEncoder.speed;
   // }
-
+  ControlData * pData = new ControlData;
+  if(Serial1.available()){
+        char buffer = (char)Serial1.read();
+        // ControlData * pData = new ControlData;
+        switch (buffer) {
+        case 0x64:
+            pData->direction = Drivetrain::FWD;
+            pData->speed     = 100;
+        break;
+        case 'a':
+            pData->direction = Drivetrain::LEFT;
+            pData->speed     = 100;
+        break;
+        case 's':
+            pData->direction = Drivetrain::BACK;
+            pData->speed     = 100;
+        break;
+        case 'd':
+            pData->direction = Drivetrain::RIGHT;
+            pData->speed     = 100;
+        break;
+        default:
+            pData = NULL;
+        break;
+        }
+    } else 
+      pData = NULL;
+  // Data = BT.BTPoll();
+  base.moveFunction(pData);
   
   // if(millis() <= 2000){
     // MotorData* data1 = new MotorData;
@@ -94,32 +124,32 @@ void loop() {
     // MotorData* data4 = new MotorData;
     // data4->speed = 100;
     // backRight.speedSet(data4);
-    if(millis() <= 1000){
-      ControlData * cData = new ControlData;
-      cData->direction = base.FWD;
-      cData->speed = 100;
-      base.moveFunction(cData);
-    } else if (millis() > 1000 && millis() <= 2000){
-      ControlData * cData = new ControlData;
-      cData->direction = base.BACK;
-      cData->speed = 100;
-      base.moveFunction(cData);
-    } else if (millis() > 2000 && millis() <= 3000){
-      ControlData * cData = new ControlData;
-      cData->direction = base.RIGHT;
-      cData->speed = 100;
-      base.moveFunction(cData);
-    } else if (millis() > 3000 && millis() <= 4000){
-      ControlData * cData = new ControlData;
-      cData->direction = base.LEFT;
-      cData->speed = 100;
-      base.moveFunction(cData);
-    } else {
-      ControlData * cData = new ControlData;
-      cData->direction = base.STOP;
-      cData->speed = 0;
-      base.moveFunction(cData);
-    }
+    // if(millis() <= 1000){
+    //   ControlData * cData = new ControlData;
+    //   cData->direction = base.FWD;
+    //   cData->speed = 100;
+    //   base.moveFunction(cData);
+    // } else if (millis() > 1000 && millis() <= 2000){
+    //   ControlData * cData = new ControlData;
+    //   cData->direction = base.BACK;
+    //   cData->speed = 100;
+    //   base.moveFunction(cData);
+    // } else if (millis() > 2000 && millis() <= 3000){
+    //   ControlData * cData = new ControlData;
+    //   cData->direction = base.RIGHT;
+    //   cData->speed = 100;
+    //   base.moveFunction(cData);
+    // } else if (millis() > 3000 && millis() <= 4000){
+    //   ControlData * cData = new ControlData;
+    //   cData->direction = base.LEFT;
+    //   cData->speed = 100;
+    //   base.moveFunction(cData);
+    // } else {
+    //   ControlData * cData = new ControlData;
+    //   cData->direction = base.STOP;
+    //   cData->speed = 0;
+    //   base.moveFunction(cData);
+    // }
 
   // } else {
   //   // frontRight.halt();

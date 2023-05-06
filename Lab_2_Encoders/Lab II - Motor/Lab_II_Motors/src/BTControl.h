@@ -8,5 +8,17 @@ on creating the BT stream, but instead to just read it in
 #define _BTCONTROL_H
 #include "Drivetrain.h"
 
+#define BT_TX 14
+#define BT_RX 15
+
+class Bluetooth {
+    public:
+    //Bluetooth Constructor
+    Bluetooth();
+
+    //Functions for BT operation
+    ControlData * BTPoll();
+};
+
 
 #endif
