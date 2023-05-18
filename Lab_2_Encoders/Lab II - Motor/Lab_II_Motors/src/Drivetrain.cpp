@@ -3,11 +3,31 @@ Define the set of functions inside the Drivetrain header file.
 */
 #include "Drivetrain.h"
 
+void Drivetrain::leftInterruptFunc(){
+    if(digitalRead(leftEncoder.INT_PIN)){
+      leftEncoder.rise();
+    } else {
+      leftEncoder.fall();
+    }
+}
+void Drivetrain::rightInterruptFunc(){
+    if(digitalRead(rightEncoder.INT_PIN)){
+        rightEncoder.rise();
+    } else {
+        rightEncoder.fall();
+    }
+}
+
 void Drivetrain::begin(){
     FrontRight.begin(FRONT_RIGHT);
     FrontLeft.begin(FRONT_LEFT);
     BackRight.begin(BACK_RIGHT);
     BackLeft.begin(BACK_LEFT);
+
+    leftEncoder.INT_PIN = IN_1;
+    rightEncoder.INT_PIN = IN_2;
+    leftEncoder.begin();
+    rightEncoder.begin();
 }
 
 void Drivetrain::moveFunction(ControlData * pData){
@@ -54,7 +74,7 @@ void Drivetrain::ST_Forward (ControlData * pData){
     data3->speed = pData->speed;
     BackLeft.speedSet(data3);
 
-    InternalEvent(ST_IDLE);
+    // InternalEvent(ST_IDLE);
 }
 
 void Drivetrain::ST_Backward(ControlData * pData){
@@ -71,7 +91,7 @@ void Drivetrain::ST_Backward(ControlData * pData){
     data3->speed = -1*pData->speed;
     BackLeft.speedSet(data3);
 
-    InternalEvent(ST_IDLE);
+    // InternalEvent(ST_IDLE);
 }
 
 void Drivetrain::ST_Left    (ControlData * pData){
@@ -88,7 +108,7 @@ void Drivetrain::ST_Left    (ControlData * pData){
     data3->speed = -1*pData->speed;
     BackLeft.speedSet(data3);
 
-    InternalEvent(ST_IDLE);
+    // InternalEvent(ST_IDLE);
 }
 
 void Drivetrain::ST_Right   (ControlData * pData){
@@ -105,5 +125,5 @@ void Drivetrain::ST_Right   (ControlData * pData){
     data3->speed = pData->speed;
     BackLeft.speedSet(data3);
 
-    InternalEvent(ST_IDLE);
+    // InternalEvent(ST_IDLE);
 }

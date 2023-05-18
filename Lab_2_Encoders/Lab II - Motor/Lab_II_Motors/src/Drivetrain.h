@@ -9,6 +9,10 @@ command. The motor objects will be instantiated in this header file and the begi
 #define _DRIVETRAIN_H
 #include "StateMachine.h"
 #include "Motor.h"
+#include "Encoder.h"
+
+#define IN_1 2
+#define IN_2 3
 
 class ControlData : public EventData {
     public:
@@ -24,6 +28,14 @@ class Drivetrain : public StateMachine {
     //declare transition functions
     void moveFunction(ControlData*);
     void begin();
+
+    //Encoder Interrupt functions
+    void leftInterruptFunc();
+    void rightInterruptFunc();
+
+    //Instantiate encoder objects
+    Encoder leftEncoder;
+    Encoder rightEncoder;
 
     //define all the directions which ControlData can take
     enum {

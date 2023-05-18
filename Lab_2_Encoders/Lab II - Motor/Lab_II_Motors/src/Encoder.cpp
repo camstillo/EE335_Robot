@@ -4,25 +4,24 @@ Declare all the necessary functions for state machine operations
 #include "Encoder.h"
 
 //initialize encoder
-void Encoder::begin(double diameter){
-    pinMode(INT_PIN, INPUT);
-    Encoder::RADIUS = diameter/2;
+void Encoder::begin(){
+    pinMode(Encoder::INT_PIN, INPUT);
     if(digitalRead(Encoder::INT_PIN)) Encoder::currentState = ST_HIGH;
     else Encoder::currentState = ST_LOW;
 }
 
-double Encoder::getSpeed(){
-    double speed = 157.180*(Encoder::RADIUS/(Encoder::pulseWidth));
-    if(speed != INFINITY && speed <= 10)
-        return speed;
-    return NULL;
-}
+// double Encoder::getSpeed(){
+//     double speed = 157.180*(Encoder::RADIUS/(Encoder::pulseWidth));
+//     if(speed != INFINITY && speed <= 10)
+//         return speed;
+//     return NULL;
+// }
 
 //Rising edge event
 void Encoder::rise(){
     //increment counter and start the pulse width timer
     Encoder::count++;
-    Encoder::startTime = millis();
+    // Encoder::startTime = millis();
 
     //decide which transition to occur between the 
     BEGIN_TRANSITION_MAP
@@ -34,7 +33,7 @@ void Encoder::rise(){
 
 void Encoder::fall(){
     //find puslse width
-    Encoder::pulseWidth = millis() - startTime;
+    // Encoder::pulseWidth = millis() - startTime;
 
     //decide which transition to occur as falling happens
     BEGIN_TRANSITION_MAP
@@ -46,7 +45,7 @@ void Encoder::fall(){
 
 void Encoder::ST_Low(EventData* pData){
     //Turn off LED
-    Encoder::speed = this->getSpeed();
+    // Encoder::speed = this->getSpeed();
     //wait for rise event
 }
 

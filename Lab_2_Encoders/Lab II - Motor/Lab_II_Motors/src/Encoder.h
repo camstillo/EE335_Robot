@@ -16,13 +16,12 @@ class Encoder : public StateMachine {
     Encoder() : StateMachine(ST_MAX_STATES){};
 
     //intialize encoder object
-    void begin(double);
+    void begin();
 
     //declare encoder public variables
     uint8_t INT_PIN;
-    double RADIUS;
     unsigned char bufCurrentState;
-    double speed; 
+    unsigned long count;
 
     //external event functions
     void rise();
@@ -30,12 +29,6 @@ class Encoder : public StateMachine {
 
     private:
     //declare encoder private variables
-    unsigned long startTime;
-    unsigned long pulseWidth;
-    uint16_t count;
-
-    //determine encoder speed
-    double getSpeed();
 
     //functions which declare what each state does while running
     void ST_Low(EventData*);
