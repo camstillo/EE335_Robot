@@ -11,13 +11,19 @@ command. The motor objects will be instantiated in this header file and the begi
 #include "Motor.h"
 #include "Encoder.h"
 
+//pins for encoders
 #define IN_1 2
 #define IN_2 3
+
+//PID variables
+#define K_P 1
+#define K_I 1
+#define K_D 0.01
 
 class ControlData : public EventData {
     public:
     char direction;
-    int speed;
+    float speed;
 };
 
 class Drivetrain : public StateMachine {
@@ -52,6 +58,20 @@ class Drivetrain : public StateMachine {
     Motor FrontLeft;
     Motor BackRight;
     Motor BackLeft;
+
+    //PID Functions
+    int8_t calcInputPID(float, uint32_t);
+
+    //PID Variables
+    uint8_t error;
+    uint8_t lastError;
+    const float f_timeInterval = 0.2;
+    const float f_pulsePerSecPerBit = 0.764;
+    uint8_t lastPIDVal = 0;
+    unsigned long lastTime = 0;
+    uint8_t intSum = 0;
+    uint16_t intWindupCount = 0;
+    
 
     //declare state functions
     void ST_Idle                    ();

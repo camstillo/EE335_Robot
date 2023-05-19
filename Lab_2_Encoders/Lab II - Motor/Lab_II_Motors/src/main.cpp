@@ -29,20 +29,20 @@ void setup(){
 }
 
 void loop() {
-  for(int i = 0; i <= 255; i++){
+  // for(float i = 0; i <= 2; i+0.5){
     ControlData * data = new ControlData;
     data->direction = base.FWD;
-    data->speed = i;
+    data->speed = 1.3;
     base.moveFunction(data);
     if ((millis() - pollTime) >= 100){
-      Serial.print(float(base.leftEncoder.count)/9.55);
+      Serial.print(float(base.leftEncoder.count)/0.0764);
       base.leftEncoder.count = 0;
       Serial.print(" ");
-      Serial.println(float(base.rightEncoder.count)/95.5);
+      Serial.println(float(base.rightEncoder.count)/0.0764);
       base.rightEncoder.count = 0;
       pollTime = millis();
     }
-  }
+  //}
 }
 
 
