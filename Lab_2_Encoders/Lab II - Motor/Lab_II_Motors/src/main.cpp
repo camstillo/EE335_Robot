@@ -2,16 +2,26 @@
 #include "Drivetrain.h"
 // #include "BTControl.h"
 #include "Encoder.h"
+#include "LineFollow.h"
 
 //Declare objects
-Drivetrain base;
+//Drivetrain base;
+LineFollow base;
 
 void handlerFunc1(){
-  base.leftInterruptFunc();
+  base.LF_Base.leftInterruptFunc();
 }
 
 void handlerFunc2(){
-  base.rightInterruptFunc();
+  base.LF_Base.rightInterruptFunc();
+}
+
+void handlerFunc3(){
+  base.rightTrig();
+}
+
+void handlerFunc4(){
+  base.leftTrig();
 }
 
 unsigned long pollTime = millis();
@@ -23,25 +33,22 @@ void setup(){
   //attachInterrupt Functions to Encoders
   attachInterrupt(digitalPinToInterrupt(IN_1), handlerFunc1, CHANGE);
   attachInterrupt(digitalPinToInterrupt(IN_2), handlerFunc2, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(R_LF), handlerFunc3, RISING);
+  attachInterrupt(digitalPinToInterrupt(L_LF), handlerFunc4, RISING);
 
   //begin serial monitor
   Serial.begin(115200);
 }
 
 void loop() {
-  // for(float i = 0; i <= 2; i+0.5){
-    ControlData * data = new ControlData;
-    data->direction = base.FWD;
-    data->speed = 1.3;
-    base.moveFunction(data);
-    if ((millis() - pollTime) >= 100){
-      Serial.print(float(base.leftEncoder.count)/0.0764);
-      base.leftEncoder.count = 0;
-      Serial.print(" ");
-      Serial.println(float(base.rightEncoder.count)/0.0764);
-      base.rightEncoder.count = 0;
-      pollTime = millis();
-    }
+    // if ((millis() - pollTime) >= 100){
+    //   Serial.print(float(base.leftEncoder.count)/0.0764);
+    //   base.leftEncoder.count = 0;
+    //   Serial.print(" ");
+    //   Serial.println(float(base.rightEncoder.count)/0.0764);
+    //   base.rightEncoder.count = 0;
+    //   pollTime = millis();
+    // }
   //}
 }
 
