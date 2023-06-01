@@ -7,7 +7,7 @@ Defines functions from ultrasonic header file
 void Ultrasonic::trigReq() {
     //send the ultrasonic pulse and transition to 
     digitalWrite(TRIG_PIN, HIGH);
-    delayMicroseconds(10);
+    delay(10);
     digitalWrite(TRIG_PIN, LOW);
     InternalEvent(ST_PULSE_POLL);
 }

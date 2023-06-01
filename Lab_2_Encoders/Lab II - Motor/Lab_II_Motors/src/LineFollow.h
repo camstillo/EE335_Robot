@@ -10,8 +10,8 @@ into an idle state.
 #include "StateMachine.h"
 #include "Drivetrain.h"
 
-#define L_LF 18
-#define R_LF 19
+#define L_LF 19
+#define R_LF 18
 
 //create data class for PID follower
 class FollowData : public EventData {

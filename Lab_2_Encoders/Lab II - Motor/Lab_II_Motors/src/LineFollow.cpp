@@ -5,6 +5,7 @@ Describes the functions declared in the LineFollow.h file
 
 void LineFollow::begin(){
     LF_Base.begin();
+    InternalEvent(ST_RUN);
 }
 
 void LineFollow::leftTrig(){
