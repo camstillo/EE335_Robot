@@ -1,64 +1,45 @@
 /*
 Describes the functions declared in the LineFollow.h file
 */
-#include "lineFollow.h"
+#include "LineFollow.h"
 
-void LineFollow::begin(){
-    LF_Base.begin();
-    InternalEvent(ST_RUN);
+LineFollow::LineFollow(Drivetrain * p_Drivetrain){
+    p_dTrain = p_Drivetrain;
 }
 
-void LineFollow::leftTrig(){
-    if(digitalRead(R_LF)) InternalEvent(ST_IDLE);
-    BEGIN_TRANSITION_MAP
-        TRANSITION_MAP_ENTRY(ST_L_TRIG)     //ST_Run
-        TRANSITION_MAP_ENTRY(ST_L_TRIG)     //ST_L_Trig
-        TRANSITION_MAP_ENTRY(ST_L_TRIG)     //ST_R_Trig
-        TRANSITION_MAP_ENTRY(CANNOT_HAPPEN) //ST_IDLE
-    END_TRANSITION_MAP(NULL)
+void LineFollow::follow(){
+    while(!endOfLine){
+        if(digitalRead(R_LF) && digitalRead(L_LF)) this->stop();
+        else if(digitalRead(L_LF)) this->leftInterrupt();
+        else if(digitalRead(R_LF)) this->rightInterrupt();
+        else this->run();
+    }
 }
 
-void LineFollow::rightTrig(){
-    if(digitalRead(L_LF)) InternalEvent(ST_IDLE);
-    BEGIN_TRANSITION_MAP
-        TRANSITION_MAP_ENTRY(ST_R_TRIG)     //ST_Run
-        TRANSITION_MAP_ENTRY(ST_R_TRIG)     //ST_L_Trig
-        TRANSITION_MAP_ENTRY(ST_R_TRIG)     //ST_R_Trig
-        TRANSITION_MAP_ENTRY(CANNOT_HAPPEN) //ST_IDLE
-    END_TRANSITION_MAP(NULL)
-}
-
-void LineFollow::ST_Run(){
+void LineFollow::run(){
     ControlData * pData = new ControlData;
-    pData->direction = LF_Base.FWD;
+    pData->direction = p_dTrain->FWD;
     pData->speed = 100;
-    LF_Base.moveFunction(pData);
+    p_dTrain->moveFunction(pData);
 }
 
-void LineFollow::ST_L_Trig(){
-    //turn the robot until the sensor doesn't see the line anymore
-    while(digitalRead(L_LF)){
-        ControlData * pData = new ControlData;
-        pData->direction = LF_Base.LEFT;
-        pData->speed = 30;
-        LF_Base.moveFunction(pData);
-    }
-    InternalEvent(ST_RUN);
-}
-
-void LineFollow::ST_R_Trig(){
-    //turn the robot until the sensor doesn't see the line anymore
-    while(digitalRead(R_LF)){
-        ControlData * pData = new ControlData;
-        pData->direction = LF_Base.LEFT;
-        pData->speed = 30;
-        LF_Base.moveFunction(pData);
-    }
-    InternalEvent(ST_RUN);
-}
-
-void LineFollow::ST_Idle(){
+void LineFollow::leftInterrupt(){
     ControlData * pData = new ControlData;
-    pData->direction = LF_Base.STOP;
-    LF_Base.moveFunction(pData);
+    pData->direction = p_dTrain->LEFT;
+    pData->speed = 50;
+    p_dTrain->moveFunction(pData);
+}
+
+void LineFollow::rightInterrupt(){
+    ControlData * pData = new ControlData;
+    pData->direction = p_dTrain->RIGHT;
+    pData->speed = 50;
+    p_dTrain->moveFunction(pData);
+}
+
+void LineFollow::stop(){
+    ControlData * pData = new ControlData;
+    pData->direction = p_dTrain->STOP;
+    p_dTrain->moveFunction(pData);
+    endOfLine = 1;
 }

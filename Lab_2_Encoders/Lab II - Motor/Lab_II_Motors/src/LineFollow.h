@@ -5,57 +5,36 @@ that it should drive forward until some change is detected. When one of the sens
 the opposite direction as the sensor until the sensor is untriggered. It will then revert back to the drive state,
 where it will continue to go forward. If the robot turns a certain amount and doesn't have either sensor trigger,
 the robot will go into an idle state. If both sensors are triggered at the same time, then the robot will also go 
-into an idle state.
+into an idle state. This class is meant to be constructed, then destructed, so make sure after the object has reached
+the end of the line, the entire object is destroyed. 
 */
+#ifndef LINE_FOLLOW_H
+#define LINE_FOLLOW_H
 #include "StateMachine.h"
 #include "Drivetrain.h"
 
 #define L_LF 19
 #define R_LF 18
 
-//create data class for PID follower
-class FollowData : public EventData {
-
-}; 
-
 //create state machine class for PID follower
-class LineFollow : public StateMachine {
+class LineFollow {
     public:
-    //declare constructor
-    LineFollow() : StateMachine(ST_MAX_STATES) {};
+    //pass constructor drivetrain object so that the drivetrain object in main
+    //doesn't have to be deconstructed for this to work
+    LineFollow(Drivetrain *);
 
-    //interrupt Functions for the arduino
-    void leftTrig();
-    void rightTrig();
-
-    //setup function
-    void begin();
-
-    //instantiate drivetrain base
-    Drivetrain LF_Base;
+    //public "run" function as well as "done" flag
+    void follow();
+    bool endOfLine = 0;
 
     private:
+    //drivetrain pointer object
+    Drivetrain * p_dTrain;
 
-    //State functions
-    void ST_Run();
-    void ST_L_Trig();
-    void ST_R_Trig();
-    void ST_Idle();
-
-    //State map entries
-    BEGIN_STATE_MAP
-        STATE_MAP_ENTRY(&LineFollow::ST_Run)
-        STATE_MAP_ENTRY(&LineFollow::ST_L_Trig)
-        STATE_MAP_ENTRY(&LineFollow::ST_R_Trig)
-        STATE_MAP_ENTRY(&LineFollow::ST_Idle)
-    END_STATE_MAP;
-
-    //enumerate states
-    enum {
-        ST_RUN,
-        ST_L_TRIG,
-        ST_R_TRIG,
-        ST_IDLE,
-        ST_MAX_STATES
-    };
+    //run functions
+    void run();
+    void leftInterrupt();
+    void rightInterrupt();
+    void stop();
 };
+#endif

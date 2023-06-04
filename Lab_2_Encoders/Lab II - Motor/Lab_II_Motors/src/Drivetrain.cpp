@@ -53,11 +53,13 @@ int8_t Drivetrain::calcInputPID(float setSpeed, uint32_t encPulseCount){
 }
 
 void Drivetrain::begin(){
+    //initialize motors
     FrontRight.begin(FRONT_RIGHT);
     FrontLeft.begin(FRONT_LEFT);
     BackRight.begin(BACK_RIGHT);
     BackLeft.begin(BACK_LEFT);
 
+    //initalize encoder objects
     leftEncoder.INT_PIN = IN_1;
     rightEncoder.INT_PIN = IN_2;
     leftEncoder.begin();
@@ -95,8 +97,10 @@ void Drivetrain::ST_Idle(){
 }
 
 void Drivetrain::ST_Forward (ControlData * pData){
-    uint8_t r_SpeedPID = calcInputPID(pData->speed, Drivetrain::rightEncoder.count);
-    uint8_t l_SpeedPID = calcInputPID(pData->speed, Drivetrain::leftEncoder.count);
+    // uint8_t r_SpeedPID = calcInputPID(pData->speed, Drivetrain::rightEncoder.count);
+    // uint8_t l_SpeedPID = calcInputPID(pData->speed, Drivetrain::leftEncoder.count);
+    uint8_t r_SpeedPID = pData->speed;
+    uint8_t l_SpeedPID = pData->speed;
     MotorData* data = new MotorData;
     data->speed = r_SpeedPID;
     FrontRight.speedSet(data);
@@ -114,8 +118,10 @@ void Drivetrain::ST_Forward (ControlData * pData){
 }
 
 void Drivetrain::ST_Backward(ControlData * pData){
-    uint8_t r_SpeedPID = calcInputPID(pData->speed, Drivetrain::rightEncoder.count);
-    uint8_t l_SpeedPID = calcInputPID(pData->speed, Drivetrain::leftEncoder.count);
+    //uint8_t r_SpeedPID = calcInputPID(pData->speed, Drivetrain::rightEncoder.count);
+    //uint8_t l_SpeedPID = calcInputPID(pData->speed, Drivetrain::leftEncoder.count);
+    uint8_t r_SpeedPID = pData->speed;
+    uint8_t l_SpeedPID = pData->speed;
     MotorData* data = new MotorData;
     data->speed = -1*r_SpeedPID;
     FrontRight.speedSet(data);
@@ -133,8 +139,10 @@ void Drivetrain::ST_Backward(ControlData * pData){
 }
 
 void Drivetrain::ST_Left    (ControlData * pData){
-    uint8_t r_SpeedPID = calcInputPID(pData->speed, Drivetrain::rightEncoder.count);
-    uint8_t l_SpeedPID = calcInputPID(pData->speed, Drivetrain::leftEncoder.count);
+    // uint8_t r_SpeedPID = calcInputPID(pData->speed, Drivetrain::rightEncoder.count);
+    // uint8_t l_SpeedPID = calcInputPID(pData->speed, Drivetrain::leftEncoder.count);
+    uint8_t r_SpeedPID = pData->speed;
+    uint8_t l_SpeedPID = pData->speed;
     MotorData* data = new MotorData;
     data->speed = r_SpeedPID;
     FrontRight.speedSet(data);
@@ -152,8 +160,10 @@ void Drivetrain::ST_Left    (ControlData * pData){
 }
 
 void Drivetrain::ST_Right   (ControlData * pData){
-    uint8_t r_SpeedPID = calcInputPID(pData->speed, Drivetrain::rightEncoder.count);
-    uint8_t l_SpeedPID = calcInputPID(pData->speed, Drivetrain::leftEncoder.count);
+    // uint8_t r_SpeedPID = calcInputPID(pData->speed, Drivetrain::rightEncoder.count);
+    // uint8_t l_SpeedPID = calcInputPID(pData->speed, Drivetrain::leftEncoder.count);
+    uint8_t r_SpeedPID = pData->speed;
+    uint8_t l_SpeedPID = pData->speed;
     MotorData* data = new MotorData;
     data->speed = -1*r_SpeedPID;
     FrontRight.speedSet(data);
