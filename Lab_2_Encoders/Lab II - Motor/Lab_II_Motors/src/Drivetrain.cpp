@@ -60,10 +60,13 @@ void Drivetrain::begin(){
     BackLeft.begin(BACK_LEFT);
 
     //initalize encoder objects
-    leftEncoder.INT_PIN = IN_1;
-    rightEncoder.INT_PIN = IN_2;
-    leftEncoder.begin();
-    rightEncoder.begin();
+    // leftEncoder.INT_PIN = IN_1;
+    // rightEncoder.INT_PIN = IN_2;
+    // leftEncoder.begin();
+    // rightEncoder.begin();
+
+    //initialize Ultrasonic
+    frontSensor.begin();
 }
 
 void Drivetrain::moveFunction(ControlData * pData){
@@ -72,7 +75,10 @@ void Drivetrain::moveFunction(ControlData * pData){
         ExternalEvent(ST_IDLE);
     break;
     case FWD:
-        ExternalEvent(ST_FORWARD, pData);
+        if(frontSensor.getDistance()){
+            ExternalEvent(ST_IDLE);
+        } else
+            ExternalEvent(ST_FORWARD, pData);
     break;
     case BACK:
         ExternalEvent(ST_BACKWARD, pData);

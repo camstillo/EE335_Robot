@@ -38,3 +38,13 @@ class LineFollow {
     void stop();
 };
 #endif
+
+/*
+To instantiate module:
+// while(n < 1){
+  //   LineFollow LF_base = LineFollow(&base);
+  //   LF_base.follow();
+  //   delete &LF_base;
+  //   n++;
+  // }
+*/

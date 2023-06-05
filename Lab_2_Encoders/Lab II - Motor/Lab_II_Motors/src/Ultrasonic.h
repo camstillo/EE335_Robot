@@ -5,42 +5,23 @@ object in front of it and stop if the distance is below some threshold. This mea
 machine which will find the distance while taking as little processing power as possible since the motors will be 
 running at the same time
 */
-#include "StateMachine.h"
+#ifndef ULTRASONIC_H
+#define ULTRASONIC_H
 
-#define ECHO_PIN 8
+#include "Arduino.h"
+#define ECHO_PIN 6
 #define TRIG_PIN 7
 
-class Ultrasonic : public StateMachine {
+class Ultrasonic {
 public:
-    //required public functions & variables
-    void trigReq();
-    uint16_t distance = 25;
-
-    //class constructor
-    Ultrasonic() : StateMachine(ST_MAX_STATES) {};
+    //public functions
+    bool getDistance();
+    void begin();
 
 private:
-    //private variables
-    unsigned long startTime = 0;
-    unsigned long pulseWidth = 0;
-
-    //State Functions
-    void ST_Idle();
-    void ST_PulsePoll();
-    void ST_EchoRec();
-
-    //State table
-    BEGIN_STATE_MAP
-        STATE_MAP_ENTRY(&Ultrasonic::ST_Idle)
-        STATE_MAP_ENTRY(&Ultrasonic::ST_PulsePoll)
-        STATE_MAP_ENTRY(&Ultrasonic::ST_EchoRec)
-    END_STATE_MAP
-
-    //enumerate states
-    enum {
-        ST_IDLE,
-        ST_PULSE_POLL,
-        ST_ECHO_REC,
-        ST_MAX_STATES
-    };
+    //private functions
+    void sendPulse();
+    float distCalc(unsigned long);
 };
+
+#endif

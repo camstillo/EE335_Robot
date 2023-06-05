@@ -10,6 +10,7 @@ command. The motor objects will be instantiated in this header file and the begi
 #include "StateMachine.h"
 #include "Motor.h"
 #include "Encoder.h"
+#include "Ultrasonic.h"
 
 //pins for encoders
 #define IN_1 2
@@ -58,6 +59,9 @@ class Drivetrain : public StateMachine {
     Motor FrontLeft;
     Motor BackRight;
     Motor BackLeft;
+
+    //instantiate ultrasonic object
+    Ultrasonic frontSensor;
 
     //PID Functions
     int8_t calcInputPID(float, uint32_t);
