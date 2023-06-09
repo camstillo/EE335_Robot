@@ -24,9 +24,9 @@ float Ultrasonic::distCalc(unsigned long pulse){
 
 bool Ultrasonic::getDistance(){
   Ultrasonic::sendPulse();
-  unsigned long pulseWidth = {0};
-  pulseWidth = pulseIn(ECHO_PIN, HIGH);
-  if(uint16_t(Ultrasonic::distCalc(pulseWidth)) < 10) return true;
+  unsigned long pulseWidth = pulseIn(ECHO_PIN, HIGH, 600);
+  if(pulseWidth == 0) pulseWidth = 1000;
+  if(uint16_t(Ultrasonic::distCalc(pulseWidth)) < 5) return true;
   return false;
 }
 

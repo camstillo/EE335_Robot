@@ -10,10 +10,14 @@ LineFollow::LineFollow(Drivetrain * p_Drivetrain){
 void LineFollow::follow(){
     while(!endOfLine){
         if(digitalRead(R_LF) && digitalRead(L_LF)) this->stop();
-        else if(digitalRead(L_LF)) this->leftInterrupt();
-        else if(digitalRead(R_LF)) this->rightInterrupt();
+        else if(digitalRead(L_LF)) {
+            this->leftInterrupt();
+        }
+        else if(digitalRead(R_LF)) {
+            this->rightInterrupt();
+        }
         else this->run();
-    }
+    } return;
 }
 
 void LineFollow::run(){
@@ -26,14 +30,14 @@ void LineFollow::run(){
 void LineFollow::leftInterrupt(){
     ControlData * pData = new ControlData;
     pData->direction = p_dTrain->LEFT;
-    pData->speed = 50;
+    pData->speed = 100;
     p_dTrain->moveFunction(pData);
 }
 
 void LineFollow::rightInterrupt(){
     ControlData * pData = new ControlData;
     pData->direction = p_dTrain->RIGHT;
-    pData->speed = 50;
+    pData->speed = 100;
     p_dTrain->moveFunction(pData);
 }
 

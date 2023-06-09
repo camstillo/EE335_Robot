@@ -15,6 +15,8 @@ command. The motor objects will be instantiated in this header file and the begi
 //pins for encoders
 #define IN_1 2
 #define IN_2 3
+#define TRIG_PIN 7
+#define ECHO_PIN 6
 
 //PID variables
 #define K_P 1

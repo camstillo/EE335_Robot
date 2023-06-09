@@ -7,17 +7,26 @@ on creating the BT stream, but instead to just read it in
 #ifndef _BTCONTROL_H
 #define _BTCONTROL_H
 #include "Drivetrain.h"
+#include "Gripper.h"
+#include "LineFollow.h"
 
 #define BT_TX 14
 #define BT_RX 15
 
 class Bluetooth {
-    public:
-    //Bluetooth Constructor
-    Bluetooth();
+    //drivetrain and gripper pointers
+    Drivetrain * p_Drivetrain;
+    Gripper * p_Gripper;
 
-    //Functions for BT operation
-    ControlData * BTPoll();
+    //send movement information for bluetooth signal
+    void BTCommand(uint8_t);
+
+    public:
+    //Constructor
+    Bluetooth(Drivetrain*, Gripper*);
+
+    //wait for bluetooth signal
+    void BT_Poll();
 };
 
 
